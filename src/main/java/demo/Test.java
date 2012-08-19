@@ -2,6 +2,7 @@ package demo;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.mongodb.Mongo;
 
@@ -22,6 +23,7 @@ public class Test {
     }
 }
 
+@Entity("programmers")
 class Programmer {
     @Id
     String githubUserName;
