@@ -2,6 +2,7 @@ package demo;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.mongodb.Mongo;
@@ -20,11 +21,12 @@ public class Test {
 
         Programmer programmer = new Programmer();
         programmer.githubUserName = "scotthernandez";
-        programmer.name= "Scott Hernandez";
+        programmer.name = new Name("Scott", "Hernandez");
         programmer.memberSince = SimpleDateFormat.getDateInstance().parse("Aug 12, 2009");
         programmer.active = true;
         programmer.followers = 8;
         programmer.following = Arrays.asList("moraes", "stickfigure");
+
         ds.save(programmer);
 
         System.out.println(programmer);
@@ -35,7 +37,7 @@ public class Test {
 class Programmer {
     @Id
     String githubUserName;
-    String name;
+    Name name;
     Date memberSince;
     boolean active;
     int followers;
@@ -52,5 +54,14 @@ class Programmer {
                 ", following=" + following +
                 '}';
     }
-  }
+}
 
+@Embedded
+class Name {
+    String first, last;
+
+    Name(final String first, final String last) {
+        this.first = first;
+        this.last = last;
+    }
+}
