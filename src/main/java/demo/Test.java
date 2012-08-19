@@ -26,6 +26,8 @@ public class Test {
         programmer.active = true;
         programmer.followers = 8;
         programmer.following = Arrays.asList("moraes", "stickfigure");
+        programmer.repositories = Arrays.asList(new Repository("docs", "mongodb/docs"),
+                new Repository("mongo-java-driver", "mongodb/mongo-java-driver"));
 
         ds.save(programmer);
 
@@ -42,6 +44,7 @@ class Programmer {
     boolean active;
     int followers;
     List<String> following;
+    List<Repository> repositories;
 
     @Override
     public String toString() {
@@ -52,6 +55,7 @@ class Programmer {
                 ", active=" + active +
                 ", followers=" + followers +
                 ", following=" + following +
+                ", repositories=" + repositories +
                 '}';
     }
 }
@@ -65,3 +69,25 @@ class Name {
         this.last = last;
     }
 }
+
+@Embedded
+class Repository {
+    String name;
+    String forkedFrom;
+
+    Repository(final String name, final String forkedFrom) {
+        this.name = name;
+        this.forkedFrom = forkedFrom;
+    }
+
+    @Override
+    public String toString() {
+        return "Repository{" +
+                "name='" + name + '\'' +
+                ", forkedFrom='" + forkedFrom + '\'' +
+                '}';
+    }
+}
+
+
+
