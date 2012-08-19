@@ -7,7 +7,9 @@ import com.google.code.morphia.annotations.Id;
 import com.mongodb.Mongo;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -22,7 +24,7 @@ public class Test {
         programmer.memberSince = SimpleDateFormat.getDateInstance().parse("Aug 12, 2009");
         programmer.active = true;
         programmer.followers = 8;
-
+        programmer.following = Arrays.asList("moraes", "stickfigure");
         ds.save(programmer);
 
         System.out.println(programmer);
@@ -37,6 +39,7 @@ class Programmer {
     Date memberSince;
     boolean active;
     int followers;
+    List<String> following;
 
     @Override
     public String toString() {
@@ -46,7 +49,8 @@ class Programmer {
                 ", memberSince=" + memberSince +
                 ", active=" + active +
                 ", followers=" + followers +
+                ", following=" + following +
                 '}';
     }
-}
+  }
 
