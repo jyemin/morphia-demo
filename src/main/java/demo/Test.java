@@ -4,7 +4,6 @@ import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.annotations.Id;
 import com.mongodb.Mongo;
-import org.bson.types.ObjectId;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -14,7 +13,8 @@ public class Test {
         Datastore ds = morphia.createDatastore(mongo, "test");
 
         Programmer programmer = new Programmer();
-        programmer.name= "Jeff";
+        programmer.githubUserName = "scotthernandez";
+        programmer.name= "Scott Hernandez";
 
         ds.save(programmer);
 
@@ -24,13 +24,13 @@ public class Test {
 
 class Programmer {
     @Id
-    ObjectId id;
+    String githubUserName;
     String name;
 
     @Override
     public String toString() {
         return "Programmer{" +
-                "id=" + id +
+                "gitHubUserName=" + githubUserName +
                 ", name='" + name + '\'' +
                 '}';
     }
