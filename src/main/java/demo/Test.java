@@ -4,6 +4,7 @@ import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.mongodb.Mongo;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
@@ -16,13 +17,7 @@ public class Test {
         Datastore ds = morphia.createDatastore(mongo, "test");
         ds.ensureIndexes();
 
-        Programmer scott = new Programmer();
-        scott.userName = "scotthernandez";
-        scott.name = "Scott Hernandez";
-        scott.since = SimpleDateFormat.getDateInstance().parse("Aug 12, 2009");
-        scott.active = true;
-        scott.followers = 8;
-        scott.following = Arrays.asList("moraes", "stickfigure");
+        Programmer scott = createScott();
         ds.save(scott);
 
         Organization mongodb = new Organization();
@@ -37,9 +32,34 @@ public class Test {
         Repository scottDocs = new Repository(scott, "docs", mongoDocs);
         ds.save(scottDocs);
 
-        System.out.println(ds.find(Programmer.class).field("since").
-                lessThan(SimpleDateFormat.getDateInstance().parse("Jan 1, 2010")).
-                field("followers").greaterThan(0).get());
+        Programmer jeff = createJeff();
+        ds.save(jeff);
+
+        // jeff is following scott, so increment scott's followers and re-save
+        scott.followers++;
+        ds.save(scott);
+    }
+
+    private static Programmer createScott() throws ParseException {
+        Programmer scott = new Programmer();
+        scott.userName = "scotthernandez";
+        scott.name = "Scott Hernandez";
+        scott.since = SimpleDateFormat.getDateInstance().parse("Aug 12, 2009");
+        scott.active = true;
+        scott.followers = 8;
+        scott.following = Arrays.asList("moraes", "stickfigure");
+        return scott;
+    }
+
+    private static Programmer createJeff() throws ParseException {
+        Programmer scott = new Programmer();
+        scott.userName = "jyemin";
+        scott.name = "Jeff Yemin";
+        scott.since = SimpleDateFormat.getDateInstance().parse("Oct 7, 2011");
+        scott.active = true;
+        scott.followers = 4;
+        scott.following = Arrays.asList("scotthernandez");
+        return scott;
     }
 }
 
