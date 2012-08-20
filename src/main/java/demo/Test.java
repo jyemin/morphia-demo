@@ -2,6 +2,8 @@ package demo;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.google.code.morphia.query.Query;
+import com.google.code.morphia.query.UpdateOperations;
 import com.mongodb.Mongo;
 
 import java.text.ParseException;
@@ -35,9 +37,12 @@ public class Test {
         Programmer jeff = createJeff();
         ds.save(jeff);
 
-        // jeff is following scott, so increment scott's followers and re-save
-        scott.followers++;
-        ds.save(scott);
+        // increment followers of scott by one
+        UpdateOperations<Programmer> incrementFollowing = ds.createUpdateOperations(Programmer.class).inc("followers", 1);
+        Query<Programmer> queryForScott = ds.find(Programmer.class, "userName", "scotthernandez");
+        ds.update(queryForScott, incrementFollowing);
+
+        System.out.println(queryForScott.get());
     }
 
     private static Programmer createScott() throws ParseException {
