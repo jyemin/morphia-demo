@@ -37,7 +37,8 @@ public class Test {
         Repository scottDocs = new Repository(scott, "docs", mongoDocs);
         ds.save(scottDocs);
 
-        System.out.println(ds.find(Programmer.class).filter("followers >", 0).get());
+        System.out.println(ds.find(Programmer.class).field("since").
+                lessThan(SimpleDateFormat.getDateInstance().parse("Jan 1, 2010")).get());
     }
 }
 
