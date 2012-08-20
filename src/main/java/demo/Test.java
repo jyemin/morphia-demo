@@ -37,7 +37,7 @@ public class Test {
         Repository scottDocs = new Repository(scott, "docs", mongoDocs);
         ds.save(scottDocs);
 
-        System.out.println(ds.find(Programmer.class).field("username").equal("scotthernandez").get());
+        System.out.println(ds.find(Programmer.class).field("followers").greaterThan(0).get());
     }
 }
 
