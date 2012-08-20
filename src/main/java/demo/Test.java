@@ -38,7 +38,8 @@ public class Test {
         ds.save(scottDocs);
 
         System.out.println(ds.find(Programmer.class).field("since").
-                lessThan(SimpleDateFormat.getDateInstance().parse("Jan 1, 2010")).get());
+                lessThan(SimpleDateFormat.getDateInstance().parse("Jan 1, 2010")).
+                field("followers").greaterThan(0).get());
     }
 }
 
