@@ -37,14 +37,7 @@ public class Test {
         Repository scottDocs = new Repository(scott, "docs", mongoDocs);
         ds.save(scottDocs);
 
-        for (Repository cur : ds.find(Repository.class).field("owner").equal(mongodb)) {
-            System.out.println(cur);
-        }
-
-        for (Repository cur : ds.find(Repository.class).field("owner").equal(scott)) {
-            System.out.println(cur);
-        }
-
+        System.out.println(ds.get(Programmer.class, "scotthernandez"));
     }
 }
 
