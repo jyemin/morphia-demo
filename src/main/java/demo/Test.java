@@ -5,7 +5,9 @@ import com.google.code.morphia.Morphia;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Reference;
 import com.mongodb.Mongo;
+import org.bson.types.ObjectId;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -26,12 +28,15 @@ public class Test {
         programmer.active = true;
         programmer.followers = 8;
         programmer.following = Arrays.asList("moraes", "stickfigure");
-        programmer.repositories = Arrays.asList(new Repository("docs", "mongodb/docs"),
-                new Repository("mongo-java-driver", "mongodb/mongo-java-driver"));
-
         ds.save(programmer);
 
         System.out.println(programmer);
+
+        Repository repo = new Repository(programmer, "docs", "mongodb/docs");
+
+        ds.save(repo);
+
+        System.out.println(repo);
     }
 }
 
@@ -44,7 +49,6 @@ class Programmer {
     boolean active;
     int followers;
     List<String> following;
-    List<Repository> repositories;
 
     @Override
     public String toString() {
@@ -55,7 +59,6 @@ class Programmer {
                 ", active=" + active +
                 ", followers=" + followers +
                 ", following=" + following +
-                ", repositories=" + repositories +
                 '}';
     }
 }
@@ -70,12 +73,15 @@ class Name {
     }
 }
 
-@Embedded
+@Entity("repos")
 class Repository {
+    @Id ObjectId id;
+    @Reference Programmer owner;
     String name;
     String forkedFrom;
 
-    Repository(final String name, final String forkedFrom) {
+    Repository(final Programmer owner, final String name, final String forkedFrom) {
+        this.owner = owner;
         this.name = name;
         this.forkedFrom = forkedFrom;
     }
@@ -83,7 +89,9 @@ class Repository {
     @Override
     public String toString() {
         return "Repository{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", owner=" + owner +
+                ", name='" + name + '\'' +
                 ", forkedFrom='" + forkedFrom + '\'' +
                 '}';
     }
