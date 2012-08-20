@@ -37,7 +37,7 @@ public class Test {
         Repository scottDocs = new Repository(scott, "docs", mongoDocs);
         ds.save(scottDocs);
 
-        System.out.println(ds.get(Programmer.class, "scotthernandez"));
+        System.out.println(ds.find(Programmer.class, "userName", "scotthernandez").get());
     }
 }
 
